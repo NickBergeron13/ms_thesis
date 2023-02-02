@@ -1,0 +1,6 @@
+*.jpeg
+*.docx
+output/
+docs/
+*.Rhistory
+/.Rproj.user
