@@ -4,3 +4,4 @@ output/
 docs/
 *.Rhistory
 */.Rproj.user/
+.Rproj.user

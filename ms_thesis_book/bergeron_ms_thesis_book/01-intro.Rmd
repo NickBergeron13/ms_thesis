@@ -1,6 +1,27 @@
+---
+title: "Chapter 1: Building my database"
+author: "Nick Bergeron"
+date: "2023-03-17"
+output: html_document
+---
+
+## Creating My Project Databse Using SQLite
+
+```{r image, echo=FALSE, fig.align='center', out.width='100%'}
+knitr::include_graphics("C:\\Users\\Nick\\Documents\\ms_thesis\\ms_thesis_book\\bergeron_ms_thesis_book\\bergeron_ms_thesis_database_diagram.png")
+```
+First, I need to load packages `DBI` and `RSQLite`. Then I need establish a connection to my database in R. This step will create the specified database if it does not exist.
+
+```{r database_creation, eval=FALSE}
 library(DBI)
 library(RSQLite)
 ms_thesis_db <- dbConnect(RSQLite::SQLite(), "ms_thesis.db") 
+```
+
+## Create aspen_plot table
+I need to first recreate the table in R to mirror my .csv file. This allows me to then populate the table with data from my .csv file. I have to specify the name of each column as well as data type and necessary constraints. The query at the end confirms that I have populated the table correctly.
+
+```{r aspen_plots,echo=TRUE, eval = FALSE}
 dbExecute(ms_thesis_db, "CREATE TABLE aspen_plots (
           plot_id integer PRIMARY KEY,
           utm_x_start double,
@@ -10,8 +31,13 @@ dbExecute(ms_thesis_db, "CREATE TABLE aspen_plots (
 aspen_plots <- read.csv("Aspen_Transect-GPS-Points_refined_final.csv", header = T)
 dplyr::glimpse(aspen_plots)
 dbWriteTable(ms_thesis_db, "aspen_plots", aspen_plots, append = TRUE)
-dbGetQuery(ms_thesis_db, "SELECT * FROM aspen_plots LIMIT 10;")
+dbGetQuery(ms_thesis_db, "SELECT * FROM aspen_plots LIMIT 10;") 
 
+```
+
+## Create trees table
+Same process as the aspen_plot data, but this time I need to create and AUTOINCREMENT Primary Key. This is a simple process that is done by adding `PRIMARY KEY AUTOINCREMENT` to the tree_id column. This is necessary since I do not have a unique identifier in my trees table. To populate the table, I first need to add the tree_id column, then import the rest of the columns from my .csv.
+```{r trees, echo=TRUE, eval=FALSE}
 dbExecute(ms_thesis_db, "CREATE TABLE trees (
           tree_id INTEGER PRIMARY KEY AUTOINCREMENT,
           tree_number integer NOT NULL,
@@ -25,8 +51,12 @@ dplyr::glimpse(trees)
 library(dplyr)
 trees <- select(trees, tree_id, tree_number, plot_id, year)
 dbWriteTable(ms_thesis_db, "trees", trees, append = TRUE)
-dbGetQuery(ms_thesis_db, "SELECT * FROM trees LIMIT 100;")
+dbGetQuery(ms_thesis_db, "SELECT * FROM trees LIMIT 10;")
+```
 
+## Create measurements table
+This is the same process as the trees table. I populated the tree_id column using the trees table. `INSTER INTO` was not working for me so I used a workaround that involved selecting the specific tree_id column from trees and using `cbind` to add it to the measurements table. 
+```{r measurements, echo=TRUE, eval=FALSE}
 dbExecute(ms_thesis_db, "CREATE TABLE measurements (
           measurement_id INTEGER PRIMARY KEY AUTOINCREMENT,
           tree_id integer,
@@ -49,5 +79,9 @@ measurements <- select(measurements, measurement_id, tree_id, height, cag, dbh,w
 dbWriteTable(ms_thesis_db, "measurements", measurements, append = TRUE)
 
 dbGetQuery(ms_thesis_db, "SELECT * FROM measurements LIMIT 10")
+
+```
+
+This concludes the the first chapter of my Reproducible Data Science project book. My database is a simple one, but it that is because my data is straightforward. 
 
 
