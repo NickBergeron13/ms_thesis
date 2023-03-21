@@ -14,7 +14,9 @@ description: |
 link-citations: yes
 github-repo: rstudio/bookdown-demo
 ---
+# About
 
+This is a book detailing my final project in Reproducible Data Science.
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages

@@ -1,4 +1,4 @@
-## Creating My Project Databse Using SQLite
+# Creating My Project Databse Using SQLite
 
 ```{r image, echo=FALSE, fig.align='center', out.width='100%'}
 knitr::include_graphics("C:\\Users\\Nick\\Documents\\ms_thesis\\ms_thesis_book\\bergeron_ms_thesis_book\\bergeron_ms_thesis_database_diagram.png")
