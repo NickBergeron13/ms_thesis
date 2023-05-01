@@ -11,9 +11,7 @@ trees <- dbGetQuery(ms_thesis_db, "SELECT * FROM trees;")
 measurements <- dbGetQuery(ms_thesis_db, "SELECT * FROM measurements;")
 ```
 ## Data checks
-Before conducting any analyses I must first check for data entry errors and refine 
-the data to exclude temporary minimum height placeholders to ensure I am only working
-with actual measurements.
+Before conducting any analyses, I must check for data entry errors and refine the data to exclude temporary minimum height placeholders to ensure I only work with actual measurements.
 
 ### Aspen Plots
 ```{r aspen_plot_eval,echo = TRUE, eval=FALSE, warning=FALSE}
@@ -25,10 +23,7 @@ range(aspen_plots$utm_x_end, na.rm = TRUE)
 range(aspen_plots$utm_y_end, na.rm = TRUE)
 length(unique(aspen_plots$plot_id))
 ```
-Check table aspen_plots. `anyNA` was used to check for NA's, `range` was used to
-determine if I mixed up coordinates, and `length` and `unique` were used to endure 
-all plots were accounted for. I ended up needing to fix some coordinates that had
-the latitude and longitude swapped.
+Check table aspen_plots. `anyNA` was used to check for NA's, `range` was used to determine if I mixed up coordinates, and `length` and `unique` were used to ensure all plots were accounted for. I ended up needing to fix some coordinates that had the latitude and longitude swapped.
 
 ### Trees
 ```{r trees_eval, echo = TRUE, eval=FALSE, warning=FALSE}
@@ -38,8 +33,7 @@ range(trees$tree_number)
 range(trees$plot_id)
 range(trees$year)
 ```
-Similar to before, I checked the data for errors. I found that tree numbers for 
-2020 were not put into the .csv, rectified the original .csv file.
+Similar to before, I checked the data for errors using the same methods. I found that tree numbers for 2020 were not put into the .csv, rectified the original .csv file.
 
 ### Measurements
 ```{r measurements_eval, echo = TRUE, eval=FALSE, warning=FALSE}
@@ -53,13 +47,7 @@ sort(unique(tall_ya$height), decreasing  = TRUE)
 flitered_measurements <- filter(measurements, height < 550) %>% 
   filter(!(height %in% c(300,350,400,450, 500, 550)))
 ```
-In our data, we use minimum estimates for heights that we can't measure. I want to
-filter those out as they are not actual measurements, just estimates. These heights are 
-300, 350, 400, 450, 500, 550. I will also remove all measurements over 550 as 
-those are either estimates, or generated from a dbh formula as it is not possible 
-to measure a 550cm tree with a meter stick. To do this, I selected all measurements
-under 550 cm, and then selected the opposite including the placeholders above. 
-This removed 1554 rows which had minimums.
+In our data, we use minimum estimates for heights that we can't measure. I want to filter those out as they are not actual measurements, just estimates. These heights are 300, 350, 400, 450, 500, 550. I will also remove all measurements over 550 as those are either estimates or generated from a dbh formula as it is not possible to measure a 550cm tree with a meter stick. To do this, I selected all measurements under 550 cm, and then selected the opposite including the placeholders above. This removed 1554 rows that had minimums.
 
 ## Create a table to use for graphs
 ```{r join, echo = TRUE, eval=FALSE}
@@ -68,6 +56,4 @@ young_aspen <- flitered_measurements %>%
   select(height, cag, year, plot_id, tree_id, winter_browse)
 write.csv(young_aspen, file = "young_aspen.csv", row.names = FALSE)
 ```
-Here I join my filtered measurements to the trees table and select for the columns
-height, cag, year, plot_id, tree_id, and winter_browse. I saved this table as a .csv
-to use when graphically explore my data in the next chapter.
+Here I join my filtered measurements to the trees table and select the columns height, cag, year, plot_id, tree_id, and winter_browse. I saved this table as a .csv to use when graphically exploring my data in the next chapter.
