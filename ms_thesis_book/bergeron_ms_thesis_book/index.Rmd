@@ -16,7 +16,9 @@ github-repo: rstudio/bookdown-demo
 ---
 # About
 
-This is a book detailing my final project in Reproducible Data Science.
+This is a book detailing my final project in Reproducible Data Science. I will briefly detail some data checks and processing as well as some graphical explorations. 
+
+My data comes from sampling plots in Northern Yellowstone established by Dr. Eric Larsen from University if Wisconsin Stevens Point in 1999. This data is being used to examine changes in aspen after the reintroduction of wolves in Yellowstone National Park.
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages

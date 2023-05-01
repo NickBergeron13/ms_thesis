@@ -4,13 +4,13 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Nick Bergeron’s Reproducible Data Science Final Project</title>
+  <title>Chapter 3 Data Checks and Processing | Nick Bergeron’s Reproducible Data Science Final Project</title>
   <meta name="description" content="<p>This is a book detailing my final project in Reproducible Data Science.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
   <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Nick Bergeron’s Reproducible Data Science Final Project" />
+  <meta property="og:title" content="Chapter 3 Data Checks and Processing | Nick Bergeron’s Reproducible Data Science Final Project" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>This is a book detailing my final project in Reproducible Data Science.
@@ -19,7 +19,7 @@ set in the _output.yml file.</p>" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Nick Bergeron’s Reproducible Data Science Final Project" />
+  <meta name="twitter:title" content="Chapter 3 Data Checks and Processing | Nick Bergeron’s Reproducible Data Science Final Project" />
   
   <meta name="twitter:description" content="<p>This is a book detailing my final project in Reproducible Data Science.
 The HTML output format for this example is bookdown::gitbook,
@@ -36,8 +36,8 @@ set in the _output.yml file.</p>" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="creating-my-project-databse-using-sqlite.html"/>
+<link rel="prev" href="creating-my-project-databse-using-sqlite.html"/>
+<link rel="next" href="graphically-exploring-my-data.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -194,24 +194,76 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Nick Bergeron’s Reproducible Data Science Final Project</h1>
-<p class="author"><em>Nick Bergeron</em></p>
-<p class="date"><em>2023-05-01</em></p>
+<div id="data-checks-and-processing" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Data Checks and Processing<a href="data-checks-and-processing.html#data-checks-and-processing" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="data-checks" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Data checks<a href="data-checks-and-processing.html#data-checks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Before conducting any analyses I must first check for data entry errors and refine
+the data to exclude temporary minimum height placeholders to ensure I am only working
+with actual measurements.</p>
+<div id="aspen-plots" class="section level3 hasAnchor" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Aspen Plots<a href="data-checks-and-processing.html#aspen-plots" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data-checks-and-processing.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anyNA</span>(aspen_plots)</span>
+<span id="cb5-2"><a href="data-checks-and-processing.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(<span class="fu">is.na</span>(aspen_plots)) </span>
+<span id="cb5-3"><a href="data-checks-and-processing.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(aspen_plots<span class="sc">$</span>utm_x_start) </span>
+<span id="cb5-4"><a href="data-checks-and-processing.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(aspen_plots<span class="sc">$</span>utm_y_start)</span>
+<span id="cb5-5"><a href="data-checks-and-processing.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(aspen_plots<span class="sc">$</span>utm_x_end, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-6"><a href="data-checks-and-processing.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(aspen_plots<span class="sc">$</span>utm_y_end, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-7"><a href="data-checks-and-processing.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(aspen_plots<span class="sc">$</span>plot_id))</span></code></pre></div>
+<p>Check table aspen_plots. <code>anyNA</code> was used to check for NA’s, <code>range</code> was used to
+determine if I mixed up coordinates, and <code>length</code> and <code>unique</code> were used to endure
+all plots were accounted for. I ended up needing to fix some coordinates that had
+the latitude and longitude swapped.</p>
 </div>
-<div id="about" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> About<a href="index.html#about" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This is a book detailing my final project in Reproducible Data Science. I will briefly detail some data checks and processing as well as some graphical explorations.</p>
-<p>My data comes from sampling plots in Northern Yellowstone established by Dr. Eric Larsen from University if Wisconsin Stevens Point in 1999. This data is being used to examine changes in aspen after the reintroduction of wolves in Yellowstone National Park.</p>
+<div id="trees" class="section level3 hasAnchor" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Trees<a href="data-checks-and-processing.html#trees" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="data-checks-and-processing.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anyNA</span>(trees)</span>
+<span id="cb6-2"><a href="data-checks-and-processing.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(trees<span class="sc">$</span>tree_id)</span>
+<span id="cb6-3"><a href="data-checks-and-processing.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(trees<span class="sc">$</span>tree_number)</span>
+<span id="cb6-4"><a href="data-checks-and-processing.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(trees<span class="sc">$</span>plot_id)</span>
+<span id="cb6-5"><a href="data-checks-and-processing.html#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(trees<span class="sc">$</span>year)</span></code></pre></div>
+<p>Similar to before, I checked the data for errors. I found that tree numbers for
+2020 were not put into the .csv, rectified the original .csv file.</p>
+</div>
+<div id="measurements" class="section level3 hasAnchor" number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> Measurements<a href="data-checks-and-processing.html#measurements" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="data-checks-and-processing.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(measurements<span class="sc">$</span>height, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-2"><a href="data-checks-and-processing.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(measurements<span class="sc">$</span>cag, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-3"><a href="data-checks-and-processing.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(measurements<span class="sc">$</span>dbh, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-4"><a href="data-checks-and-processing.html#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(measurements<span class="sc">$</span>winter_browse, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-5"><a href="data-checks-and-processing.html#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(measurements<span class="sc">$</span>summer_browse,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-6"><a href="data-checks-and-processing.html#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(measurements<span class="sc">$</span>new_sucker, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-7"><a href="data-checks-and-processing.html#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">unique</span>(tall_ya<span class="sc">$</span>height), <span class="at">decreasing  =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb7-8"><a href="data-checks-and-processing.html#cb7-8" aria-hidden="true" tabindex="-1"></a>flitered_measurements <span class="ot">&lt;-</span> <span class="fu">filter</span>(measurements, height <span class="sc">&lt;</span> <span class="dv">550</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-9"><a href="data-checks-and-processing.html#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(height <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">300</span>,<span class="dv">350</span>,<span class="dv">400</span>,<span class="dv">450</span>, <span class="dv">500</span>, <span class="dv">550</span>)))</span></code></pre></div>
+<p>In our data, we use minimum estimates for heights that we can’t measure. I want to
+filter those out as they are not actual measurements, just estimates. These heights are
+300, 350, 400, 450, 500, 550. I will also remove all measurements over 550 as
+those are either estimates, or generated from a dbh formula as it is not possible
+to measure a 550cm tree with a meter stick. To do this, I selected all measurements
+under 550 cm, and then selected the opposite including the placeholders above.
+This removed 1554 rows which had minimums.</p>
+</div>
+</div>
+<div id="create-a-table-to-use-for-graphs" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Create a table to use for graphs<a href="data-checks-and-processing.html#create-a-table-to-use-for-graphs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data-checks-and-processing.html#cb8-1" aria-hidden="true" tabindex="-1"></a>young_aspen <span class="ot">&lt;-</span> flitered_measurements <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="data-checks-and-processing.html#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(trees, <span class="at">by =</span> <span class="st">&quot;tree_id&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="data-checks-and-processing.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(height, cag, year, plot_id, tree_id, winter_browse)</span>
+<span id="cb8-4"><a href="data-checks-and-processing.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(young_aspen, <span class="at">file =</span> <span class="st">&quot;young_aspen.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>Here I join my filtered measurements to the trees table and select for the columns
+height, cag, year, plot_id, tree_id, and winter_browse. I saved this table as a .csv
+to use when graphically explore my data in the next chapter.</p>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="creating-my-project-databse-using-sqlite.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="creating-my-project-databse-using-sqlite.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="graphically-exploring-my-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -242,7 +294,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-organizing.Rmd",
 "text": "Edit"
 },
 "history": {

@@ -8,6 +8,7 @@ First, I need to load packages `DBI` and `RSQLite`. Then I need establish a conn
 ```{r database_creation, eval=FALSE}
 library(DBI)
 library(RSQLite)
+library(tidyverse)
 ms_thesis_db <- dbConnect(RSQLite::SQLite(), "ms_thesis.db") 
 ```
 
@@ -16,16 +17,15 @@ I need to first recreate the table in R to mirror my .csv file. This allows me t
 
 ```{r aspen_plots,echo=TRUE, eval = FALSE}
 dbExecute(ms_thesis_db, "CREATE TABLE aspen_plots (
-          plot_id integer PRIMARY KEY,
+          plot_id varchar PRIMARY KEY,
           utm_x_start double,
           utm_y_start double,
           utm_x_end double,
           utm_y_end double) ;")
-aspen_plots <- read.csv("Aspen_Transect-GPS-Points_refined_final.csv", header = T)
+aspen_plots <- read.csv("../../processed_data/Aspen_Transect-GPS-Points_refined_final.csv", header = T)
 dplyr::glimpse(aspen_plots)
 dbWriteTable(ms_thesis_db, "aspen_plots", aspen_plots, append = TRUE)
 dbGetQuery(ms_thesis_db, "SELECT * FROM aspen_plots LIMIT 10;") 
-
 ```
 
 ## Create trees table
@@ -33,12 +33,12 @@ Same process as the aspen_plot data, but this time I need to create and AUTOINCR
 ```{r trees, echo=TRUE, eval=FALSE}
 dbExecute(ms_thesis_db, "CREATE TABLE trees (
           tree_id INTEGER PRIMARY KEY AUTOINCREMENT,
-          tree_number integer NOT NULL,
+          tree_number integer,
           plot_id integer NOT NULL,
           year integer,
           FOREIGN KEY (plot_id) REFERENCES aspen_plots(plot_id)
           );")
-trees <- read.csv("2022_aspen_data_suckers_tree.csv", header = TRUE)
+trees <- read.csv("../../processed_data/2022_aspen_data_suckers_tree.csv", header = TRUE)
 trees$tree_id <- 1:nrow(trees)
 dplyr::glimpse(trees)
 library(dplyr)
@@ -62,7 +62,7 @@ dbExecute(ms_thesis_db, "CREATE TABLE measurements (
           FOREIGN KEY (tree_id) REFERENCES trees (tree_id)
           );")
 
-measurements <- read.csv("2022_aspen_data_suckers_measurements_all.csv", header = TRUE)          
+measurements <- read.csv("../../processed_data/2022_aspen_data_suckers_measurements_all.csv", header = TRUE)   
 tree_id<- dbGetQuery(conn = ms_thesis_db, 
                      statement = "SELECT tree_id FROM trees;")
 measurements <- cbind(measurements, tree_id)
@@ -75,6 +75,6 @@ dbGetQuery(ms_thesis_db, "SELECT * FROM measurements LIMIT 10")
 
 ```
 
-This concludes the the first chapter of my Reproducible Data Science project book. My database is a simple one, but it that is because my data is straightforward. 
+This concludes the the first chapter of my Reproducible Data Science project book. 
 
 
