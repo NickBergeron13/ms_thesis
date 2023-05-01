@@ -20,6 +20,10 @@ This is a book detailing my final project in Reproducible Data Science. I will b
 
 My data comes from sampling plots in Northern Yellowstone established by Dr. Eric Larsen from University if Wisconsin Stevens Point in 1999. This data is being used to examine changes in aspen after the reintroduction of wolves in Yellowstone National Park.
 
+```{r cover_image, echo=FALSE, fig.align='center', out.width='100%'}
+knitr::include_graphics("C:\\Users\\Nick\\Documents\\ms_thesis\\ms_thesis_book\\bergeron_ms_thesis_book\\PXL_20220805_174619773.jpg")
+```
+
 ```{r include=FALSE}
 # automatically create a bib database for R packages
 knitr::write_bib(c(
